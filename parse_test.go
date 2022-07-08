@@ -77,6 +77,55 @@ func TestNormalizeID(t *testing.T) {
 			},
 			wantRes: "6281001099979",
 		},
+		// weird numbers
+		{
+			name: "weird number 6208",
+			args: args{
+				phoneNumber: "62081001099979",
+				countryCode: 0,
+			},
+			wantRes: "6281001099979",
+		},
+		{
+			name: "weird number +6208",
+			args: args{
+				phoneNumber: "+62081001099979",
+				countryCode: 0,
+			},
+			wantRes: "6281001099979",
+		},
+		{
+			name: "weird number 08",
+			args: args{
+				phoneNumber: "081001099979",
+				countryCode: 0,
+			},
+			wantRes: "6281001099979",
+		},
+		{
+			name: "weird number +08",
+			args: args{
+				phoneNumber: "+081001099979",
+				countryCode: 0,
+			},
+			wantRes: "6281001099979",
+		},
+		{
+			name: "weird number +0628",
+			args: args{
+				phoneNumber: "+06281001099979",
+				countryCode: 0,
+			},
+			wantRes: "6281001099979",
+		},
+		{
+			name: "weird number +028",
+			args: args{
+				phoneNumber: "+0281001099979",
+				countryCode: 0,
+			},
+			wantRes: "62281001099979",
+		},
 		// ID region ends
 
 		// US regions
@@ -109,6 +158,15 @@ func TestNormalizeID(t *testing.T) {
 			args: args{
 				phoneNumber: "+13153553191",
 				countryCode: 0,
+			},
+			wantRes: "13153553191",
+		},
+		// weird numbers
+		{
+			name: "weird numbers +01",
+			args: args{
+				phoneNumber: "+013153553191",
+				countryCode: 1,
 			},
 			wantRes: "13153553191",
 		},

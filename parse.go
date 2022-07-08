@@ -14,22 +14,28 @@ const (
 
 var (
 	regexPlusLeadingNumber = regexp.MustCompile(`^\+*`)
-	regexZeroLeadingNumber = regexp.MustCompile(`^\+{1}0+`)
 	supportedCountryCodes  = phonenumbers.GetSupportedCallingCodes()
 )
+
+// getRegexZeroLeadingNumber will panic if the regexp.MustCompile cannot compile the regex.
+func getRegexZeroLeadingNumber(countryCode string) *regexp.Regexp {
+	return regexp.MustCompile(`^\+0+(` + countryCode + `)?`)
+}
 
 // NormalizeID parses the phone number using the countryCode.
 // It returns the normalized phone number and the country code.
 // The default country code is ID.
+// WARNING: This function can panic if the regex is invalid.
 func NormalizeID(phoneNumber string, countryCode int) (res string) {
 	res = phoneNumber
 	if countryCode == 0 || !supportedCountryCodes[countryCode] {
 		countryCode = DefaultCountryCodeNumberID
 	}
-	regStrCountryCode := strconv.Itoa(countryCode)
+	countryCodeStr := strconv.Itoa(countryCode)
 
 	phoneNumber = regexPlusLeadingNumber.ReplaceAllString(phoneNumber, "+")
-	phoneNumber = regexZeroLeadingNumber.ReplaceAllString(phoneNumber, "+"+regStrCountryCode)
+	phoneNumber = getRegexZeroLeadingNumber(countryCodeStr).
+		ReplaceAllString(phoneNumber, "+"+countryCodeStr)
 	pn, err := phonenumbers.Parse(phoneNumber, "")
 	if err != nil {
 		return
