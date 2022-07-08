@@ -111,12 +111,13 @@ func TestNormalizeID(t *testing.T) {
 			wantRes: "6281001099979",
 		},
 		{
+			// https://www.kode-telepon-negara.info/kode+area+Asahan++Tanjung+Balai+id.php
 			name: "weird number +0628",
 			args: args{
 				phoneNumber: "+06281001099979",
 				countryCode: 0,
 			},
-			wantRes: "6281001099979",
+			wantRes: "626281001099979",
 		},
 		{
 			name: "weird number +028",
